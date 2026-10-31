@@ -50,7 +50,7 @@ public class LivroController {
 
     @GetMapping("/documentacao")
     public String documentacao() {
-        return "Use o /livros para listá-los, o /livros/cadastrar para registrá-los, o /livros/alterar para fazer um ajuste e por fim o /livros/id para buscar por id ou para deletar livro.";
+        return "SEGUE A DOCUMENTAÇÂO DAS ROTAS: \n /livros -> listá-los \n /livros/cadastrar -> registrá-los \n /livros/alterar -> atualizá-los \n /livros/id -> buscar por id ou deletar";
     }
 
     // GET - Listar todos os livros
@@ -76,7 +76,7 @@ public class LivroController {
 
     // POST - Cadastrar livro 
 
-    @PostMapping("/cadatrar")
+    @PostMapping("/cadastrar")
     public Livro cadastrarLivro(@RequestBody Livro livro) {
         
         if (livro.getId() == null) {
