@@ -12,11 +12,13 @@ import com.ct_books.api.model.Livro;
 import com.ct_books.api.model.Status;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 
 
@@ -42,6 +44,13 @@ public class LivroController {
     @GetMapping("/")
     public String home() {
         return "Bem-vindo à API de Livros!";
+    }
+
+    // GET - Documentação 
+
+    @GetMapping("/documentacao")
+    public String documentacao() {
+        return "Use o /livros para listá-los, o /livros/cadastrar para registrá-los, o /livros/alterar para fazer um ajuste e por fim o /livros/id para buscar por id ou para deletar livro.";
     }
 
     // GET - Listar todos os livros
@@ -90,5 +99,68 @@ public class LivroController {
         livros.add(livro);
         return livro;
     }
+
+    // PUT - Atualizar livro
+
+    @PutMapping("/alterar/{id}")
+    public Livro atualizarLivro(@PathVariable Long id, @RequestBody Livro livroAtualizado) {
+        
+        for (Livro livro : livros) {
+            
+            if (id.equals(livro.getId())) {
+
+                livro.setTitulo(
+                    livroAtualizado.getTitulo()
+                );
+
+                livro.setAutor(
+                    livroAtualizado.getAutor()
+                );
+
+                livro.setEditora(
+                    livroAtualizado.getEditora()
+                );
+
+                livro.setAno(
+                    livroAtualizado.getAno()
+                );
+
+                livro.setCategoria(
+                    livroAtualizado.getCategoria()
+                );
+
+                livro.setStatus(
+                    livroAtualizado.getStatus()
+                );
+
+                return livro;
+            }
+        }
+
+            throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "Não foi encontrado um livro com o ID " + id
+            );
+    }
+
+    // DELETE - Deleta livro pelo id
     
+    @DeleteMapping("/{id}")    
+    public String excluirLivro(@PathVariable int id) {
+
+        boolean removida = livros.removeIf(
+            livro -> Objects.equals(livro.getId(), (long) id)
+        );
+
+        if (removida) {
+            return "Livro removido com sucesso!";
+        }
+
+        throw new ResponseStatusException(
+            HttpStatus.NOT_FOUND,
+            "Livro não encontrado"
+        );
+
+    }
+
 }
