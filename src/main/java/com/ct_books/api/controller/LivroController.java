@@ -71,7 +71,10 @@ public class LivroController {
             }
         }
 
-        return null;
+        throw new ResponseStatusException(
+            HttpStatus.NOT_FOUND,
+            "Não foi encontrado um livro com o ID " + id
+        );
     }
 
     // POST - Cadastrar livro 
